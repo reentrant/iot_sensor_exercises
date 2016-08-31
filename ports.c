@@ -32,7 +32,7 @@ void PORTS_Init(void) {
     LATCbits.LATC6 = 0;
     LATCbits.LATC2 = 0;
 
-    //PPS
+    //PPS: Peripheral Pin Select
     RC3PPSbits.RC3PPS = 0b00100; // CLC1OUT on RC3
     RC5PPSbits.RC5PPS = 0b00101; // CLC2OUT on RC5
     RC1PPSbits.RC1PPS = 0b10100; //TX
