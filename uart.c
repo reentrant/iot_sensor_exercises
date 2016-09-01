@@ -41,3 +41,12 @@ uint8_t USARTReadChar(void) {
     return RCREG;
 }
 
+/*
+ * 
+ * HISTORY:
+ * -----------------------------------------------------------------------------
+ * AUTHOR   TICKET   DATE         DESCRIPTION
+ * ----------------------------------------------------------------------------- 
+ * JRA              05-26-2016   Updated UART_Init() function to change the baud
+ *                               from 115200 to 9600 bps.
+ */

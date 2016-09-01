@@ -9,7 +9,7 @@
 //Includes
 #include "main.h"
 
-main() {
+int main() {
     
     //Configure internal MCU modules
     PORTS_Init();
@@ -64,6 +64,7 @@ main() {
             }
         }
     }
+    return 0;
 }
 
 
