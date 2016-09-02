@@ -21,7 +21,7 @@ void LED_sequence(void);
 void motion_detection(void);
 void axis_detection(void);
 void sleep_seconds(int );
-#ifndef EMBEDDED_C_SIGNED_INTEGERS
+#ifndef EMBEDDED_C__EX1_SIGNED_INTEGERS
 int16_t signextend(uint16_t);
 #endif
 //Global Vars

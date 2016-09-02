@@ -620,7 +620,7 @@ void axis_detection(void)
 #endif
 
 
-#ifndef EMBEDDED_C_SIGNED_INTEGERS
+#ifndef EMBEDDED_C__EX1_SIGNED_INTEGERS
 /*!
 * @brief Sign extend a signed 12-bit value to a signed 16-bit value.
 *
