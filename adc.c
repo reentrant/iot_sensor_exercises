@@ -7,7 +7,12 @@ void ADC_Init(void) {
     ADRESH = 0x00; // Clear
     ADRESL = 0x00; // Clear
 }
-
+/*
+ * Description: The Analog-to-Digital Converter (ADC) allows conversion of an 
+ *              analog input signal to a 10-bit binary representation of that 
+ *              signal.
+ * Output: ADRES: 10 bits width.
+ */
 float ADC_Convert(void) {
 
     //Start Conversion

@@ -1,7 +1,9 @@
+#include <assert.h>
 #include "main.h"
 
 uint8_t state = 0;
 
+#ifdef TILT_PROGRAM_2000_WORDS
 void TILT(void) {
 
     while (MENU == 0) {
@@ -95,7 +97,9 @@ void TILT(void) {
     Clear_LEDs();
 
 }
+#endif
 
+#ifdef FADE_PROGRAM_2000_WORDS
 void FADE(void) {
 
     Roll = 0;
@@ -179,7 +183,9 @@ void FADE(void) {
 
     Clear_LEDs();
 }
+#endif
 
+#ifdef SQUEAKY_PROGRAM_2000_WORDS
 void SQUEAKY(void) {
 
 
@@ -230,8 +236,10 @@ void SQUEAKY(void) {
     TRISCbits.TRISC5 = 1;
 
 }
+#endif
 
 
+#ifdef DOUBLE_TAP_PROGRAM_2000_WORDS
 void DOUBLE_TAP(void) {
     I2C_Write8(BMA, 0x16, 0x10); //Enable Double and Single Tap
     I2C_Write8(BMA, 0x2A, 0xF5); //375ms Window
@@ -336,13 +344,21 @@ void DOUBLE_TAP(void) {
 
 
 }
-void sleep_seconds(int seconds)
+#endif
+
+void sleep_seconds(const int seconds)
 {
     state = MENU;
-    for (int i = 0; i < seconds * 1000; i++ )
+    // Let the compiler check:
+    char int_err [sizeof(int) == 2];
+    // or at runtime:
+    assert(seconds * 1000 < 32767);
+    for (volatile int i = 0; i < seconds * 1000; i++ )
+    // NOTE: The volatile keyword assures this loop won't optimize.
     {
         __delay_ms(1);// 1ms
-        if (state != MENU) break;
+        if (state != MENU) 
+            break;
     }
 }
 /*
@@ -356,50 +372,50 @@ void LED_sequence(void)
     Clear_LEDs();
     if (state != MENU) return;
     __delay_us(10);
-    while (1)
-    {
-        // LED 1: white
-        Load_LEDS(G1 = 128, R1 = 128, B1 = 128, 
-                G2 = 0, R2 = 0, B2 = 0, 
-                G3 = 0, R3 = 0, B3 = 0, 
-                G4 = 0, R4 = 0, B4 = 0, 
-                G5 = 0, R5 = 0, B5 = 0);
-        sleep_seconds(1);
-        
-        // LED 2: Red
-        Load_LEDS(G1 = 0, R1 = 0, B1 = 0, 
-                G2 = 0, R2 = 128, B2 = 0, 
-                G3 = 0, R3 = 0, B3 = 0, 
-                G4 = 0, R4 = 0, B4 = 0, 
-                G5 = 0, R5 = 0, B5 = 0);
-        sleep_seconds(1);
-        
-        // LED 3: Green
-        Load_LEDS(G1 = 0, R1 = 0, B1 = 0, 
-                G2 = 0, R2 = 0, B2 = 0, 
-                G3 = 128, R3 = 0, B3 = 0, 
-                G4 = 0, R4 = 0, B4 = 0, 
-                G5 = 0, R5 = 0, B5 = 0);
-        sleep_seconds(1);
-        
-        // LED 4: Blue
-        Load_LEDS(G1 = 0, R1 = 0, B1 = 0, 
-                G2 = 0, R2 = 0, B2 = 0, 
-                G3 = 0, R3 = 0, B3 = 0, 
-                G4 = 0, R4 = 0, B4 = 128, 
-                G5 = 0, R5 = 0, B5 = 0);
-        sleep_seconds(1);
-        
-        // LED 5: Red
-        Load_LEDS(G1 = 0, R1 = 0, B1 = 0,
-                G2 = 0, R2 = 0, B2 = 0, 
-                G3 = 0, R3 = 0, B3 = 0, 
-                G4 = 0, R4 = 0, B4 = 0, 
-                G5 = 0, R5 = 128, B5 = 0);
-        sleep_seconds(1);
-    }// while(1))
+    
+    // LED 1: white
+    Load_LEDS(G1 = 128, R1 = 128, B1 = 128,
+            G2 = 0, R2 = 0, B2 = 0, 
+            G3 = 0, R3 = 0, B3 = 0, 
+            G4 = 0, R4 = 0, B4 = 0, 
+            G5 = 0, R5 = 0, B5 = 0);
+    sleep_seconds(1);
+
+    // LED 2: Red
+    Load_LEDS(G1 = 0, R1 = 0, B1 = 0, 
+            G2 = 0, R2 = 128, B2 = 0, 
+            G3 = 0, R3 = 0, B3 = 0, 
+            G4 = 0, R4 = 0, B4 = 0, 
+            G5 = 0, R5 = 0, B5 = 0);
+    sleep_seconds(1);
+
+    // LED 3: Green
+    Load_LEDS(G1 = 0, R1 = 0, B1 = 0, 
+            G2 = 0, R2 = 0, B2 = 0, 
+            G3 = 128, R3 = 0, B3 = 0, 
+            G4 = 0, R4 = 0, B4 = 0, 
+            G5 = 0, R5 = 0, B5 = 0);
+    sleep_seconds(1);
+
+    // LED 4: Blue
+    Load_LEDS(G1 = 0, R1 = 0, B1 = 0, 
+            G2 = 0, R2 = 0, B2 = 0, 
+            G3 = 0, R3 = 0, B3 = 0, 
+            G4 = 0, R4 = 0, B4 = 128, 
+            G5 = 0, R5 = 0, B5 = 0);
+    sleep_seconds(1);
+
+    // LED 5: Red
+    Load_LEDS(G1 = 0, R1 = 0, B1 = 0,
+            G2 = 0, R2 = 0, B2 = 0, 
+            G3 = 0, R3 = 0, B3 = 0, 
+            G4 = 0, R4 = 0, B4 = 0, 
+            G5 = 0, R5 = 128, B5 = 0);
+    sleep_seconds(1);
+    return;
 }
 
+#ifdef MOTION_DETECTION_PROGRAM_2000_WORDS
 /*
  * FUNCTION: motion_detection
  * DESCRIPTION: It detects the motion;
@@ -558,7 +574,9 @@ void motion_detection(void)
         __delay_ms(1);// 1ms
     }
 }
+#endif
 
+#ifdef ACCEL_PROGRAM_2000_WORDS
 /*
  * FUNCTION: axis_detection
  * DESCRIPTION: It detects the axis
@@ -599,6 +617,44 @@ void axis_detection(void)
         __delay_ms(1);// 1ms
     }
 }
+#endif
+
+
+#ifndef EMBEDDED_C_SIGNED_INTEGERS
+/*!
+* @brief Sign extend a signed 12-bit value to a signed 16-bit value.
+*
+* @param[in] input A 12-bit signed value, in 2's complement format.
+*
+* @return int16_t A 16-bit signed value, in 2's complement format.
+*/
+int16_t signextend(uint16_t input)
+{
+   int16_t  output;
+   // NOTE: There?s good info on the 2?s complement representation of signed
+   // integers at: http://en.wikipedia.org/wiki/Two's_complement.
+   // Here only the least significant 12-bits are properly formatted as 2?s
+   // complement. The upper 4 bits are garbage that your code needs to modify.
+   
+   const uint16_t sign_12bit = 0x0800;
+   const uint16_t sign_16bit = 0x8000;
+   
+   if (input & sign_12bit)
+   {
+       // it is negative
+              output = input | 0xF000;
+   }
+   else
+   {
+       // it is positive
+       // 1st. Clear garbage:
+       output = input & 0x0FFF;
+   }
+
+   return (output);
+}
+#endif
+
 /*
  * HISTORY:
  * -----------------------------------------------------------------------------
@@ -607,6 +663,7 @@ void axis_detection(void)
  * JRA              03-07-2016   Added LED_sequence()
  * JRA              03-08-2016   Added sleep_seconds() 
  * JRA              03-09-2016   Added motion_detection()
- * JRA              08-29-2016   Activate in the code LED_Sequence(); 
+ * JRA              08-29-2016   Activate in the code LED_Sequence();
+ * JRA              09-02-2016   Added int16_t signextend(uint16_t); 
  */
 

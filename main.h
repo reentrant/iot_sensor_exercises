@@ -47,7 +47,7 @@
 //Includes    
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
+#include <stdint.h>     //C99 added built-in fixed-width integers
 #include <math.h>
 #include <xc.h>
 
